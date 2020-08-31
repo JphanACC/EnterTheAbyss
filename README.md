@@ -1,10 +1,10 @@
 # EnterTheAbyss
 Project Zero
-##Homenu
+## Homenu
 ![](photos/HomeMenu.jpg)
-##Battle
+## Battle
 ![](photos/Concept.jpg)
-Source: Me. (I did all of these. The background, item and enemy sprites will be reused for web element.)
+Source: Me. Jack Phan
 
 ## MVP Pitch
 Are you prepared to enter the deepest Abyss? For gold and glory, you will enter into the most challenging dungeon. You can kill your enemy by using either magic or physical weapon, but watch out, the magic spell can harm you but deliver the most powerful blow to your enemy. The user will have 3 potions to start with. Plan your moves carefully, the enemies keep getting stronger as you enter deeper into the abyss.
