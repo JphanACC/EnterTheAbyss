@@ -23,13 +23,13 @@ Are you prepared to enter the deepest Abyss? For gold and glory, you will enter 
     2. Magic attack (fire ball icon): This attack deals 25 damage but at the cost of 5 health deducted from the player's side. 
     3. Health potion: The player starts with 3 potions at the start, this item will allow the player to heal 10 Health Points each use.
     ## Visual Break Down
-    On player turn: 
+    On player turn: <br>
         1. When click on either of the attack icons, the button will turn little bigger ad turns white to indicate clicked feedback.<br>
         2. After the icon feedback, the monster sprite will also flash and rumbles at the same time to indicated being hit. (requires a random generation that hits X and Y axis when the sprite moves up) <br>
         3. After the monster's sprite animation, the health bar of the monster will show up being decreased. <br>
         Victory: When the player defeats the monster, the monster sprite will disappear for few seconds. A prompt will show up and ask the player to either continue or retreat, then the next one will show up again. <br>
         Defeat: If the player's health drop down to zero, a box will down while the the whole screen turns red. The player will have to refresh the page to reset the match. One of the stretch goals will implement a feature to allow a refresh button. <br>
-    On enemy's turn:
+    On enemy's turn:<br>
         1. Enemy's sprite will rumble again, but without flashing. A blood effect will show up on player's screen instead to indicated being hit.
         2. After the enemy's hit, the player's health numbers will decrease. <br>
 
