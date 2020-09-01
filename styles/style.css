@@ -1,0 +1,243 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: FireFlight;
+    src: url(../fonts/FireFlightFREE.ttf);
+    font-family: Crawler;
+    src: url(../fonts/CRAWLER-RegularDEMO.ttf);
+    font-family: RoyalKnight;
+    src: url(../fonts/Royal_Knights-Demo.ttf);
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    background-color: black;
+    min-width: 600px;
+}
+
+
+/* SECTION HOME MENU*/
+
+div.home-menu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    background: black;
+    align-items: center;
+    top: 25vh;
+    height: 10vh;
+    width: 55vw;
+    border-style: double;
+    background: linear-gradient(to left, #080202, #460808, #080202);
+    border-radius: 15px;
+}
+
+section.home-menu {
+    position: relative;
+    font-family: Crawler;
+    text-align: center;
+    background: -webkit-linear-gradient(#4e0202, #9b0202);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: #8f0101 0 2 15px;
+    top: 2vh;
+    font-size: 3vh;
+}
+
+div.game-section {
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    align-items: center;
+    top: 10%;
+    bottom: 10%;
+}
+
+img#background-dungeon {
+    position: relative;
+    width: 85%;
+    max-width: 720px;
+    min-width: 25px;
+    height: auto;
+}
+
+
+/* SECTION Monster Properties*/
+
+section.monster-section {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 15.5vh;
+    width: 78vw;
+    max-width: 590px;
+}
+
+#sprite-monster {
+    position: relative;
+    width: 80%;
+    height: auto;
+    top: 3vh;
+    margin: auto;
+}
+
+div.enemy-info {
+    position: absolute;
+    width: 45.5vw;
+    height: 3vh;
+    max-width: 25vh;
+    bottom: 267px;
+    background: linear-gradient(to left, #080202, #460808, #080202);
+    align-items: center;
+}
+
+div.enemy-info p {
+    position: relative;
+    margin: 0px;
+    font-family: RoyalKnight;
+    background: -webkit-linear-gradient(#00797C, #0055ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    font-size: 28px;
+    bottom: 0.5vh;
+    top: -2.5vh;
+}
+
+#enemy-health-point {
+    bottom: 1vh
+}
+
+
+/* SECTION Player Properties */
+
+section.player-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    max-width: 720px;
+    height: auto;
+    top: -150px;
+    color: white;
+}
+
+section.player-information {
+    position: absolute;
+    width: 100%;
+}
+
+#text-playerHealth {
+    position: relative;
+    text-align: center;
+    font-family: Crawl;
+    bottom: 4.7em;
+    font-size: 1.5em;
+    letter-spacing: 2px;
+    color: red;
+    background: -webkit-linear-gradient(rgb(240, 196, 100), #800000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#text-health-point {
+    position: relative;
+    text-align: center;
+    font-family: Crawl;
+    bottom: 2.4em;
+    font-size: 3.1em;
+    letter-spacing: 2px;
+    color: red;
+    background: -webkit-linear-gradient(rgb(189, 54, 36), #c76228);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#ui-playerinfo {
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+section.player-attack-section {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    top: 68%;
+}
+
+#ui-physicalattack {
+    position: relative;
+    width: 50%;
+    height: auto;
+}
+
+#ui-magicalattack {
+    position: relative;
+    width: 50%;
+    height: auto;
+}
+
+section.potion {
+    position: relative;
+    position: relative;
+    top: -15px;
+    right: 33%;
+}
+
+#ui-potionicon {
+    position: relative;
+    width: 50%;
+    height: auto;
+}
+
+#text-potion-qty {
+    position: relative;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-align: right;
+    right: 16.8em;
+    bottom: 4.7em;
+    font-size: 14px;
+    background: -webkit-linear-gradient(#55ff00, #339900);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+section.dungeon-section {
+    background: black;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 15em;
+    height: 4em;
+    border: 4.5px;
+    border-style: double;
+    background: linear-gradient(to left, #080202, #460808, #080202);
+}
+
+div.dungeon-floordiv {
+    color: red;
+}
+
+#text-floor {
+    text-align: center;
+    background: -webkit-linear-gradient(#800000, #99541b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: #81300a 0 0 10px;
+}
+
+#text-floor-number {
+    text-align: center;
+    background: -webkit-linear-gradient(#881717, #c28616);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: #81300a 0 0 10px;
+}

@@ -4,12 +4,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous" defer></script>
     <title>Enter The Abyss</title>
-    <link rel="stylesheet" href="./styles/styles.css">
-    <script src="app.js"></script>
+    <link rel="stylesheet" href="./styles/style.css">
+    <script src="app.js" defer></script>
 </head>
 
 <body>
+
+    <div class="game-section">
+        <img id="background-dungeon" src="./assets/Background-Dungeon.png" alt="background">
+
+        <section class="monster-section">
+            <img id="sprite-monster" src="./assets/Sprite-Enemy.png" alt="monster">
+            <div class="enemy-info">
+                <p id="enemy-name">Monster</p>
+                <p id="enemy-health-point">HP: 0/0</p>
+        </section>
+
+        <section class="player-section">
+            <section class="player-information">
+                <img id="ui-playerinfo" src="./assets/UI-PlayerInfo.png" alt="playerinfo">
+                <h1 id="text-playerHealth">PLAYER'S HEALTH</h1>
+                <p id="text-health-point">100/100</p>
+            </section>
+
+            <section class="player-attack-section">
+                <img id="ui-physicalattack" src="./assets/UI-PhysicalAttack.png" alt="UI-PhysicalAttack">
+
+                <img id="ui-magicalattack" src="./assets/UI-MagicalAttack.png" alt="UI-MagicalAttack">
+
+            </section>
+            <section class="potion">
+                <img id="ui-potionicon" src="./assets/UI-Potion-Icon.png " alt="potionicon">
+                <h1 id="text-potion-qty">QTY: 1</h1>
+            </section>
+        </section>
+        <section class="dungeon-section">
+            <div class="dungeon-floordiv">
+                <h1 id="text-floor">Dungeon Floor:</h1>
+                <h1 id="text-floor-number">1</h1>
+            </div>
+        </section>
+        <section class="log-section">
+            <div class="dialogue"></div>
+        </section>
+
+        </div>
+        <div class="home-menu">
+            <section class="home-menu">
+                <h1>ENTER THE ABYSS</h1>
+            </section>
+        </div>
 
 </body>
 
