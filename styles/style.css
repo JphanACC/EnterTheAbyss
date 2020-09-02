@@ -81,11 +81,11 @@ section.monster-section {
 }
 
 #sprite-monster {
-    position: relative;
-    width: 80%;
+    position: absolute;
+    width: 100%;
     height: auto;
-    top: 3vh;
-    margin: auto;
+    top: 1vh;
+    margin: -5vh auto 7vh;
 }
 
 div.enemy-info {
@@ -93,7 +93,7 @@ div.enemy-info {
     width: 45.5vw;
     height: 3vh;
     max-width: 25vh;
-    bottom: 267px;
+    bottom: 20px;
     background: linear-gradient(to left, #080202, #460808, #080202);
     align-items: center;
 }
@@ -107,7 +107,7 @@ div.enemy-info p {
     -webkit-text-fill-color: transparent;
     text-align: center;
     font-size: 28px;
-    bottom: 0.5vh;
+    bottom: 6.5vh;
     top: -2.5vh;
 }
 
@@ -240,4 +240,29 @@ div.dungeon-floordiv {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: #81300a 0 0 10px;
+}
+
+section.log-section {
+    position: absolute;
+    width: 45.5vw;
+    height: 5vh;
+    max-width: 25vh;
+    top: 15vh;
+    background: linear-gradient(to left, transparent, #080202, #310a0a, #080202, transparent);
+    align-items: center;
+}
+
+#dialogue-box {
+    color: red;
+    text-align: center;
+    margin: 8px;
+    font-size: 15px;
+    background: -webkit-linear-gradient(#881717, #c28616);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+section.log-section div {
+    max-width: 25vw;
+    margin: auto;
 }
