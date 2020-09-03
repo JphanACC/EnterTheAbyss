@@ -82,10 +82,11 @@ section.monster-section {
 
 #sprite-monster {
     position: absolute;
-    width: 100%;
+    width: 130%;
     height: auto;
-    top: 1vh;
-    margin: -5vh auto 7vh;
+    top: 9vh;
+    margin: auto;
+    transform: translate(-15%, -42%);
 }
 
 div.enemy-info {
@@ -170,7 +171,8 @@ section.player-attack-section {
     position: absolute;
     display: flex;
     flex-direction: row;
-    top: 68%;
+    top: 104%;
+    margin: 11px auto;
 }
 
 #ui-physicalattack {
@@ -187,14 +189,15 @@ section.player-attack-section {
 
 section.potion {
     position: relative;
-    position: relative;
-    top: -15px;
-    right: 33%;
+    width: 22%;
+    height: 90%;
+    margin: auto 15px;
+    transform: translate(-86px, 20px);
 }
 
 #ui-potionicon {
     position: relative;
-    width: 50%;
+    width: 100%;
     height: auto;
 }
 
@@ -202,8 +205,8 @@ section.potion {
     position: relative;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-align: right;
-    right: 16.8em;
-    bottom: 4.7em;
+    right: .5vw;
+    bottom: 2.2vh;
     font-size: 14px;
     background: -webkit-linear-gradient(#55ff00, #339900);
     -webkit-background-clip: text;
@@ -265,4 +268,75 @@ section.log-section {
 section.log-section div {
     max-width: 25vw;
     margin: auto;
+}
+
+div.how-to-play {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    align-items: center;
+    top: 23vh;
+    height: 30%;
+    max-height: 400px;
+    width: 40vw;
+    max-width: 500px;
+    border-style: double;
+    background: linear-gradient(to left, #080202, #460808, #080202);
+    border-radius: 10px;
+    color: #b37700;
+}
+
+div.how-to-play p {
+    position: relative;
+    margin: 8px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-52%, -50%);
+    font-size: 18px;
+}
+
+div.go-back {
+    position: relative;
+    margin: 30px 60px 30px 50px;
+    transform: translate(0%, 84%);
+}
+
+div.go-back button {
+    font-size: 1.2em;
+    padding: 2px;
+    width: 115px;
+}
+
+div.how-to-play-button {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    align-items: center;
+    top: 36vh;
+    height: 4%;
+    max-height: 400px;
+    min-width: 16vw;
+    width: 18vw;
+    max-width: 500px;
+    background: linear-gradient(to left, #080202, #460808, #080202);
+    border-radius: 10px;
+    font-size: 2em;
+    background: -webkit-linear-gradient(#f17868, #bd5f12);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #800000;
+    margin: 8px;
+}
+
+@media screen and (min-width: 480px) {
+    div.how-to-play {
+        height: 70%;
+    }
+    div.how-to-play-button {
+        font-size: 19px;
+        font-size-adjust: 30%;
+    }
+    section.home-menu h1 {
+        font-size: 47px;
+    }
 }
