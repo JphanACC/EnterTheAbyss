@@ -411,12 +411,13 @@ $('#ui-magicalattack').on("click", function() {
         $('div.game-section section.player-section').hide();
     } else if (monsters.enemyList[index].currentHealth <= 0) {
         $('#sprite-monster').fadeOut(300)
+        $('#sprite-boss').fadeOut(300)
         sfxVictory.play();
         musicBoss.pause()
         musicBoss.currentTime = 0;
         musicBGBattle.pause();
         musicBGBattle.currentTime = 0;
-        const messageConfirm = confirm("You have defeated the enemy! Would you rather continue or retreat?")
+        const messageConfirm = setTimeout(function() { confirm("You have defeated the enemy! Would you rather continue or retreat?") }, 300)
         if (messageConfirm == true) {
             index++;
             floor++;

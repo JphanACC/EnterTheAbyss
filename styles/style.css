@@ -17,7 +17,7 @@ body {
     display: flex;
     justify-content: center;
     background-color: black;
-    min-width: 600px;
+    min-width: 20%;
 }
 
 
@@ -29,12 +29,13 @@ div.home-menu {
     position: absolute;
     background: black;
     align-items: center;
-    top: 25vh;
+    /* top: 25vh; */
     height: 10vh;
     width: 55vw;
     border-style: double;
     background: linear-gradient(to left, #080202, #460808, #080202);
     border-radius: 15px;
+    justify-content: space-between;
 }
 
 section.home-menu {
@@ -45,7 +46,7 @@ section.home-menu {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: #8f0101 0 2 15px;
-    top: 2vh;
+    /* top: 2vh; */
     font-size: 3vh;
 }
 
@@ -55,8 +56,7 @@ div.game-section {
     flex-direction: column;
     position: absolute;
     align-items: center;
-    top: 10%;
-    bottom: 10%;
+    top: 3%;
 }
 
 img#background-dungeon {
@@ -75,18 +75,19 @@ section.monster-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    top: 15.5vh;
+    /* top: 15.5vh; */
     width: 78vw;
     max-width: 590px;
 }
 
 #sprite-monster {
-    position: absolute;
+    position: relative;
     width: 130%;
     height: auto;
     top: 9vh;
     margin: auto;
-    transform: translate(-15%, -42%);
+    transform: translate(-28%, 3%);
+    bottom: 0;
 }
 
 div.enemy-info {
@@ -94,7 +95,6 @@ div.enemy-info {
     width: 45.5vw;
     height: 3vh;
     max-width: 25vh;
-    bottom: 20px;
     background: linear-gradient(to left, #080202, #460808, #080202);
     align-items: center;
 }
@@ -108,8 +108,7 @@ div.enemy-info p {
     -webkit-text-fill-color: transparent;
     text-align: center;
     font-size: 23px;
-    bottom: 6.5vh;
-    top: -1.5vh;
+    /* : -1.5vh; */
 }
 
 #enemy-health-point {
@@ -118,11 +117,11 @@ div.enemy-info p {
 
 #sprite-boss {
     position: absolute;
-    width: 174%;
+    width: 165%;
     height: auto;
-    top: 9vh;
+    : 9vh;
     margin: auto;
-    transform: translate(0%, -52%);
+    transform: translate(0%, -82%);
 }
 
 
@@ -132,23 +131,39 @@ section.player-section {
     position: relative;
     display: flex;
     flex-direction: column;
-    width: 350px;
-    max-width: 720px;
-    height: auto;
-    top: -150px;
-    color: white;
+    width: 55%;
+    bottom: 11vh;
+    margin: 5px 23px;
 }
 
 section.player-information {
     position: absolute;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+div.playerbox {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-image: url('../assets/UI-PlayerInfo.png');
+    padding: 11%;
+    margin: auto;
+    background-size: contain;
+    background-repeat: no-repeat;
+    /* max-height: 28px; */
+    /* height: 100%;
+    width: 63%;
+    min-width: 50%; */
 }
 
 #text-playerHealth {
     position: relative;
     text-align: center;
     font-family: Crawl;
-    bottom: 4.7em;
     font-size: 1.5em;
     letter-spacing: 2px;
     color: red;
@@ -161,8 +176,7 @@ section.player-information {
     position: relative;
     text-align: center;
     font-family: Crawl;
-    bottom: 2.4em;
-    font-size: 3.1em;
+    font-size: 2.1em;
     letter-spacing: 2px;
     color: red;
     background: -webkit-linear-gradient(rgb(189, 54, 36), #c76228);
@@ -177,11 +191,13 @@ section.player-information {
 }
 
 section.player-attack-section {
-    position: absolute;
+    position: relative;
     display: flex;
     flex-direction: row;
-    top: 104%;
     margin: 11px 10% auto;
+    top: 10em;
+    flex-wrap: wrap;
+    max-width: fit-content;
 }
 
 #ui-physicalattack {
@@ -199,9 +215,9 @@ section.player-attack-section {
 section.potion {
     position: relative;
     width: 22%;
-    height: 90%;
-    margin: auto 15px;
-    transform: translate(-86px, 20px);
+    bottom: 14vh;
+    right: 6vh;
+    margin: 2%;
 }
 
 #ui-potionicon {
@@ -214,9 +230,6 @@ section.potion {
     position: relative;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-align: right;
-    right: .5vw;
-    bottom: 2.2vh;
-    font-size: 14px;
     background: -webkit-linear-gradient(#55ff00, #339900);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -259,7 +272,7 @@ section.log-section {
     width: 45.5vw;
     height: 5vh;
     max-width: 25vh;
-    top: 15vh;
+    : 15vh;
     background: linear-gradient(to left, transparent, #080202, #310a0a, #080202, transparent);
     align-items: center;
 }
@@ -284,7 +297,6 @@ div.how-to-play {
     flex-direction: column;
     position: absolute;
     align-items: center;
-    top: 23vh;
     height: 30%;
     max-height: 400px;
     width: 40vw;
@@ -298,7 +310,6 @@ div.how-to-play {
 div.how-to-play p {
     position: relative;
     margin: 8px;
-    top: 50%;
     left: 50%;
     transform: translate(-52%, -50%);
     font-size: 16px;
@@ -321,7 +332,6 @@ div.how-to-play-button {
     flex-direction: column;
     position: absolute;
     align-items: center;
-    top: 36vh;
     height: 4%;
     max-height: 400px;
     min-width: 16vw;
@@ -337,25 +347,12 @@ div.how-to-play-button {
     margin: 8px;
 }
 
-@media screen and (min-width: 480px) {
-    div.how-to-play {
-        height: 70%;
-    }
-    div.how-to-play-button {
-        font-size: 19px;
-        font-size-adjust: 30%;
-    }
-    section.home-menu h1 {
-        font-size: 47px;
-    }
-    #dialogue-box {
-        font-size: 15px;
+@media screen and (max-width: 411px) {
+    section.player-attack-section {
+        top: 126%;
     }
 }
 
-@media only screen and (max-width: 600px) {
-    div.how-to-play p {
-        font-size: 12px;
-        font-size-adjust: 30%;
-    }
+@media screen and (max-width: 375px) {
+    section.player-section {}
 }
