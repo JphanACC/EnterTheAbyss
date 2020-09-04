@@ -107,9 +107,9 @@ div.enemy-info p {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
-    font-size: 28px;
+    font-size: 23px;
     bottom: 6.5vh;
-    top: -2.5vh;
+    top: -1.5vh;
 }
 
 #enemy-health-point {
@@ -181,7 +181,7 @@ section.player-attack-section {
     display: flex;
     flex-direction: row;
     top: 104%;
-    margin: 11px auto;
+    margin: 11px 10% auto;
 }
 
 #ui-physicalattack {
@@ -301,7 +301,7 @@ div.how-to-play p {
     top: 50%;
     left: 50%;
     transform: translate(-52%, -50%);
-    font-size: 18px;
+    font-size: 16px;
 }
 
 div.go-back {
@@ -350,5 +350,12 @@ div.how-to-play-button {
     }
     #dialogue-box {
         font-size: 15px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    div.how-to-play p {
+        font-size: 12px;
+        font-size-adjust: 30%;
     }
 }

@@ -4,8 +4,8 @@ const randomIndex = function(array) {
     }
     //Music
 var musicGameStart = new Audio('music/SFX_cosmicd__annulet-of-absorption.wav.ogg')
-    //@author: brandon75689
-var musicBGHomeMenu = new Audio('music/ambientmain_0.ogg')
+    //@author: Alexandr Zhelanov
+var musicBoss = new Audio('music/So long.mp3')
     //@author: Fantasy Musica
 var musicBGBattle = new Audio('music/Battle_01.ogg')
     //@author: CleytonKauffman
@@ -29,7 +29,12 @@ var sfxVictory = new Audio('music/gold-4.wav')
     //@author: qubodup. NOTE: FLAC files
 var sfxPotion1 = new Audio('music/bottle-open-04.flac');
 var sfxPotion2 = new Audio('music/bottle-shake-06.flac');
+//@author: Catalin Pavel
+var sfxZombie = new Audio('music/Zombie Boss Sound.wav')
+    //@author: Vinrax
+var sfxBoss = new Audio('music/scream_horror1.mp3')
 
+/* ----------------------------------------------------------------------------------------*/
 class Player {
     constructor(player = "The Adventurer", health = 100, physDMG = 10, magicDMG = 25) {
         this.player = player;
@@ -69,7 +74,7 @@ class Player {
 
 }
 const player = new Player();
-//2. SECTION Factory for Enemies
+// SECTION Factory for Enemies
 // Modified with function
 class Factory {
 
@@ -89,16 +94,21 @@ class Factory {
     findEnemy(index) {
         return this.enemyList[index];
     }
-    modifyEnemy(index, baseHealth, basePhysDMG) {
+    modifyEnemy(index, baseHealth, basePhysDMG, baseMagicDMG) {
         this.enemyList[index]['ID'] = index;
-        this.enemyList[index]['player'] = `Abyss Knight ${index+1}`;
-        this.enemyList[index]['totalHealth'] = baseHealth + ((10 * index) / 5);
-        this.enemyList[index]['currentHealth'] = this.enemyList[index]['totalHealth'];
-        this.enemyList[index]['physDMG'] = Math.floor(basePhysDMG + ((2 * index) / 6));
-    }
-    boostStat(index) {
-        this.enemyList[index]['totalHealth'] = this.getRNG(3, 6) + this.enemyList[index]['health'];
-        this.enemyList[index]['physDMG'] = this.getRNG(3, 4);
+        if (floor % 5 == 0) {
+            this.enemyList[index]['player'] = `Abyss High Priestess`;
+            this.enemyList[index]['totalHealth'] = (baseHealth + 30) + ((10 * index) / 5);
+            this.enemyList[index]['currentHealth'] = this.enemyList[index]['totalHealth'];
+            this.enemyList[index]['physDMG'] = Math.floor((basePhysDMG * 2) + ((2 * index) / 6));
+            this.enemyList[index]['MagicDMG'] = Math.floor((baseMagicDMG * 2) + ((2 * index) / 6));
+        } else {
+            this.enemyList[index]['player'] = `Abyss Knight ${index+1}`;
+            this.enemyList[index]['totalHealth'] = baseHealth + ((10 * index) / 5);
+            this.enemyList[index]['currentHealth'] = this.enemyList[index]['totalHealth'];
+            this.enemyList[index]['physDMG'] = Math.floor(basePhysDMG + ((2 * index) / 6));
+        }
+
     }
 
     //Update HTML element
@@ -124,28 +134,25 @@ class Factory {
         this.enemyList[index]['MagicDMG'] = Math.floor(baseMagicDMG + ((2 * index) / 6));
     }
 
-    //Update HTML element. NOTE part of FACTORY
+    //Update HTML element. 
     assignEnemy(index) {
         $('#enemy-name').text(`${this.enemyList[index]['player']}`)
         $('#enemy-health-point').text(`HP: ${this.enemyList[index]['currentHealth']}/${this.enemyList[index]['totalHealth']}`)
     }
-
-    attackPlayer(index) {
-        $('#dialogue-box').hide()
-        $('#dialogue-box').text(`It's now ${monsters.enemyList[0].player}'s turn to attack`)
-        $('#dialogue-box').fadeIn(300)
-        setTimeout(function() { this.enemyList[index].physAttack(player) }, 2500);
-        setTimeout(updatePlayerHealth, 3000);
-    }
 }
 
 // SECTION 3. Game starts
+//Floor to keep track with progression
+let floor = 0;
+const setTextFloor = function(floorNumber) {
+    $('#text-floor-number').text(`${floorNumber}`);
+}
 
-//SECTION Enemy Stats
-const monsters = new Factory("Undead Knight");
+// Enemy Stats
+const monsters = new Factory("Undead Army");
 const generateEnemy = function(index) {
     monsters.generateEnemy();
-    monsters.modifyEnemy(index, 15, 5);
+    monsters.modifyEnemy(index, 15, 5, 10);
     monsters.assignEnemy(index);
 }
 const bosses = new Factory("Abyss Boss");
@@ -155,30 +162,32 @@ const generateBoss = function(index) {
     bosses.assignEnemy(index);
 }
 
-//Floor to keep track with progression
-let floor = 0;
-const setTextFloor = function(floorNumber) {
-    $('#text-floor-number').text(`${floorNumber}`);
-}
 
 
-//SECTION Generating Enemy and setting up for next round screen
+// SECTION Generating Enemy and setting up for next round screen
 const setUpBattle = function() {
-    floor = floor + 1; //Runs floor +1 
-    $('#sprite-boss').hide();
     $('#text-floor-number').hide();
     $('#text-floor-number').text(`${floor}`);
     $('#text-floor-number').fadeIn(400);
-    $('div.game-section section.player-section').hide();
+    $('#sprite-boss').hide();
     $('#sprite-monster').hide();
+
+    $('div.game-section section.player-section').hide();
+    if (floor % 5 == 0) {
+        $('#sprite-boss').fadeIn(2000);
+    } else {
+        $('#sprite-monster').fadeIn(2000);
+    }
+
     console.log(`This is current floor ${floor}`);
     generateEnemy(floor - 1); //Generate enemy
 
     $('div.game-section section.player-section').fadeIn(800);
-    $('#sprite-monster').fadeIn(2000);
+
+
 }
 
-// NOTE (*) BOSS SETUP
+// NOTE (*) BOSS SETUP - Abandoned
 const setUpBoss = function() {
     floor = floor + 1; //Runs floor +1 
     $('#sprite-monster').hide();
@@ -235,7 +244,7 @@ const gameOverMessage = function() {
 
 //
 
-//SECTION Start Up
+// SECTION Start Up
 $('div.how-to-play').hide();
 $('div.game-section section.monster-section').hide();
 $('div.game-section section.player-section').hide();
@@ -262,9 +271,10 @@ $('div.how-to-play-button').on("click", function() {
 });
 
 
-//****GAME START******/
+// SECTION ****GAME START******/
 
 $('div.home-menu').on("click", function() {
+    floor++;
     musicGameStart.play();
     musicBGBattle.play();
     $('div.home-menu').fadeOut(800);
@@ -276,28 +286,21 @@ $('div.home-menu').on("click", function() {
 });
 
 
-//TODO Battle turns
+// SECTION Battle turns
 const enemyAttack = function(index) {
-    sfxMonster4.play();
-    sfxMonster3.play();
+    if (floor % 5 == 0) {
+        sfxBoss.play();
+    } else {
+        sfxZombie.play();
+        sfxMonster3.play();
+        playRandomPhysSFX();
+    }
+
     $('#dialogue-box').hide()
     $('#dialogue-box').text(`It's now ${monsters.enemyList[index].player}'s turn to attack`)
     $('#dialogue-box').fadeIn(300)
     if (player.currentHealth > 1) {
         setTimeout(function() { monsters.enemyList[index].physAttack(player) }, 1500);
-        setTimeout(updatePlayerHealth, 2000);
-    } else { gameOverMessage(); }
-    // monsters.enemyList[0].physAttack(player);
-}
-
-const bossAttack = function(index) {
-    sfxMonster4.play();
-    sfxMonster3.play();
-    $('#dialogue-box').hide()
-    $('#dialogue-box').text(`It's now ${bosses.enemyList[index].player}'s turn to attack`)
-    $('#dialogue-box').fadeIn(300)
-    if (player.currentHealth > 1) {
-        setTimeout(function() { bosses.enemyList[index].physAttack(player) }, 1500);
         setTimeout(updatePlayerHealth, 2000);
     } else { gameOverMessage(); }
     // monsters.enemyList[0].physAttack(player);
@@ -309,20 +312,16 @@ bossIndex = 0;
 function givePotions() {
     if (index % 4 == 0) {
         console.log(`Debug index: ${index}`)
-        alert('You have picked 2 extra potions. Use them carefully!')
-        player.potionQTY += 2;
+        alert('You have picked up 3 extra potions. Use them carefully!')
+        player.potionQTY += 3;
         $(`#text-potion-qty`).text(`QTY: ${player.potionQTY}`);
     }
-}
+    if (floor % 5 == 0) {
+        console.log(`Debug Boss Check Function: ${index} ${monsters.enemyList[index]}`)
 
-function checkBoss() {
-    if (index % 5 == 0) {
-        console.log(`Debug Boss Check Function: ${index} ${bossIndex}`)
-        setUpBoss();
         alert('A strong challenger shows up!');
     }
 }
-
 
 
 $('#ui-physicalattack').on("click", function() {
@@ -334,9 +333,13 @@ $('#ui-physicalattack').on("click", function() {
         //     updateEnemyHealth(bosses.enemyList[bossIndex - 1]);
         // }
     console.log(`Debug Attack Normal Enemy`)
-    $('#sprite-monster').attr("src", "assets/Enemy-Sprite_FightAnimation.gif")
+    if (floor % 5 == 0) {
+        $('#sprite-boss').attr("src", "assets/Enemy-Boss-Sprite_Fight-Animation.gif")
+    } else { $('#sprite-monster').attr("src", "assets/Enemy-Sprite_FightAnimation.gif") }
+
     player.physAttack(monsters.enemyList[index]);
     updateEnemyHealth(monsters.enemyList[index]);
+    updatePlayerHealth();
 
     $('#ui-physicalattack').hide();
     $('#ui-magicalattack').hide();
@@ -350,16 +353,16 @@ $('#ui-physicalattack').on("click", function() {
     } else if (monsters.enemyList[index].currentHealth <= 0) {
         $('#sprite-monster').fadeOut(300)
         sfxVictory.play();
+        musicBoss.pause()
+        musicBoss.currentTime = 0;
         musicBGBattle.pause();
         musicBGBattle.currentTime = 0;
         const messageConfirm = confirm("You have defeated the enemy! Would you rather continue or retreat?")
         if (messageConfirm == true) {
-            $('#sprite-monster').fadeIn(300)
-            musicBGBattle.play();
             index++;
-
+            floor++;
+            if (floor % 5 == 0) { musicBoss.play() } else { musicBGBattle.play(); }
             givePotions()
-                // if (index % 5 == 0) { checkBoss(); } else { setUpBattle(); };
             setUpBattle();
         } else {
             $('#sprite-monster').fadeOut(200)
@@ -371,10 +374,25 @@ $('#ui-physicalattack').on("click", function() {
     // monsters.enemyList[0].physAttack(player)
     // updatePlayerHealth();
     //}
-    setTimeout(function() { $('#sprite-monster').attr("src", "assets/Enemy-Sprite_Animation.gif") }, 2000)
+    if (floor % 5 == 0) {
+        setTimeout(function() { $('#sprite-boss').attr("src", "assets/Enemy-Boss-Sprite_Animation.gif") }, 2000)
+    } else { setTimeout(function() { $('#sprite-monster').attr("src", "assets/Enemy-Sprite_Animation.gif") }, 2000) }
+
 })
 
 $('#ui-magicalattack').on("click", function() {
+    console.log(`Debug: Floor: ${floor}. Index: ${index}. Boss Index: ${bossIndex}`);
+    if (floor % 5 == 0) {
+        $('#sprite-boss').attr("src", "assets/Enemy-Boss-Sprite_Fight-Animation.gif")
+    } else { $('#sprite-monster').attr("src", "assets/Enemy-Sprite_FightAnimation.gif") }
+    // if (floor % 6 == 0 && bosses.enemyList[bossIndex - 1].currentHealth > 0) { //Trigger on certain floors only
+    //     if (bosses.enemyList[bossIndex - 1].currentHealth > 0) {
+    //         console.log(`Debug Attack Boss`)
+    //         player.magicAttack(bosses.enemyList[bossIndex - 1]);
+    //         updateEnemyHealth(bosses.enemyList[bossIndex - 1]);
+    //         updatePlayerHealth();
+    //     }
+    // } else { player.magicAttack(monsters.enemyList[index]); }
     player.magicAttack(monsters.enemyList[index]);
     if (player.currentHealth < 1) {
         alert('You have died due to burn damage. Watch out next time!')
@@ -382,7 +400,6 @@ $('#ui-magicalattack').on("click", function() {
     }
     updateEnemyHealth(monsters.enemyList[index]);
     updatePlayerHealth();
-
     $('#ui-physicalattack').hide();
     $('#ui-magicalattack').hide();
     setTimeout(function() { $('#ui-physicalattack').fadeIn(300); }, 2000)
@@ -394,17 +411,18 @@ $('#ui-magicalattack').on("click", function() {
         $('div.game-section section.player-section').hide();
     } else if (monsters.enemyList[index].currentHealth <= 0) {
         $('#sprite-monster').fadeOut(300)
+        sfxVictory.play();
+        musicBoss.pause()
+        musicBoss.currentTime = 0;
         musicBGBattle.pause();
         musicBGBattle.currentTime = 0;
-        sfxVictory.play();
         const messageConfirm = confirm("You have defeated the enemy! Would you rather continue or retreat?")
         if (messageConfirm == true) {
-            $('#sprite-monster').fadeIn(300)
-            musicBGBattle.play();
             index++;
+            floor++;
+            if (floor % 5 == 0) { musicBoss.play() } else { musicBGBattle.play(); }
+            givePotions()
             setUpBattle();
-            // if (index % 5 == 0) { checkBoss() } else { setUpBattle(); };
-            givePotions();
         } else {
             $('#sprite-monster').fadeOut(200)
             gameOverMessage()
@@ -412,6 +430,9 @@ $('#ui-magicalattack').on("click", function() {
     } else {
         setTimeout(function() { enemyAttack(index) }, 100);
     }
+    if (floor % 5 == 0) {
+        setTimeout(function() { $('#sprite-boss').attr("src", "assets/Enemy-Boss-Sprite_Animation.gif") }, 2000)
+    } else { setTimeout(function() { $('#sprite-monster').attr("src", "assets/Enemy-Sprite_Animation.gif") }, 2000) }
 })
 
 
