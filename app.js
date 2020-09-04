@@ -43,6 +43,7 @@ class Player {
         this.physDMG = physDMG;
         this.magicDMG = magicDMG;
         this.potionQTY = 3;
+        this.fireDMG = 5;
     }
     physAttack(target) {
 
@@ -57,7 +58,7 @@ class Player {
         sfxFireBall.play();
         $('section.log-section').hide();
         target.currentHealth = target.currentHealth - this.magicDMG;
-        this.currentHealth = this.currentHealth - 5;
+        this.currentHealth = this.currentHealth - this.fireDMG;
         $('text-health-point').text(`${this.currentHealth}/${this.totalHealth}`);
         $('#dialogue-box').text(`${this.player} dealt ${this.magicDMG} Magic DMG. \n You lose 5 HP because of Fire DMG.`);
         $('section.log-section').fadeIn(250);
@@ -308,12 +309,13 @@ const enemyAttack = function(index) {
 
 index = 0;
 bossIndex = 0;
+extraPot = 3;
 
 function givePotions() {
     if (index % 4 == 0) {
         console.log(`Debug index: ${index}`)
-        alert('You have picked up 3 extra potions. Use them carefully!')
-        player.potionQTY += 3;
+        alert(`You have picked up ${extraPot} extra potions. Use them carefully!`)
+        player.potionQTY += extraPot;
         $(`#text-potion-qty`).text(`QTY: ${player.potionQTY}`);
     }
     if (floor % 5 == 0) {
@@ -323,30 +325,41 @@ function givePotions() {
     }
 }
 
+const changeBuild = {
+    list: [{
+            build: "Health Build",
+            changeStats: function() {
+                player.totalHealth += 20;
+                player.physDMG += 5;
+                player.magicDMG += 5;
+                player.extraPot += 2;
+            }
+        },
+        {
+            build: "Physical Build",
+            changeStats: function() {
+                player.totalHealth += 15;
+                player.physDMG += 6;
+                player.magicDMG += 2;
+            }
+        },
+        {
+            build: "Magical Build",
+            changeStats: function() {
+                player.totalHealth += 10;
+                player.physDMG += 2;
+                player.magicDMG += 5;
+                if (player.fireDMG !== 0) {
+                    console.log(player.fireDMG)
+                    player.fireDMG -= 1;
+                }
+            }
+        }
+    ]
+}
 
-$('#ui-physicalattack').on("click", function() {
-    //for (number = 0; number <= monsters.enemyList.length; number++) {
-    console.log(`Debug Check ${1}`) // runs. returns 1 INSTEAD of 0
-        // if (!bosses.enemyList.length == 0) {
-        //     console.log(`Debug Attack Boss`)
-        //     player.physAttack(bosses.enemyList[bossIndex - 1]);
-        //     updateEnemyHealth(bosses.enemyList[bossIndex - 1]);
-        // }
-    console.log(`Debug Attack Normal Enemy`)
-    if (floor % 5 == 0) {
-        $('#sprite-boss').attr("src", "assets/Enemy-Boss-Sprite_Fight-Animation.gif")
-    } else { $('#sprite-monster').attr("src", "assets/Enemy-Sprite_FightAnimation.gif") }
 
-    player.physAttack(monsters.enemyList[index]);
-    updateEnemyHealth(monsters.enemyList[index]);
-    updatePlayerHealth();
-
-    $('#ui-physicalattack').hide();
-    $('#ui-magicalattack').hide();
-    setTimeout(function() { $('#ui-physicalattack').fadeIn(300); }, 2000)
-    setTimeout(function() { $('#ui-magicalattack').fadeIn(300); }, 2000)
-        // $('#ui-magicalattack').fadeIn(4000);
-
+function checkAndProceed() {
     if (player.currentHealth < 1) { //IF Player is less than 0, show game over screen
         gameOverMessage();
         $('div.game-section section.player-section').hide();
@@ -362,11 +375,21 @@ $('#ui-physicalattack').on("click", function() {
             index++;
             floor++;
             if (floor % 5 == 0) { musicBoss.play() } else { musicBGBattle.play(); }
-            givePotions()
+            if (floor % 6 == 0) {
+                const choices = prompt(`Congratulations! You can now choose your build, enter 1,2,3 to pick!\n
+                Health build: 20 Total HP, +5 Physical DMG, +5 Magic DMG, +2 HP Potions every 4 levels\n
+                Phys build: +15 Total HP, +6 physical DMG, +2 Magic DMG\n
+                Magic build: +10 Total HP, +2 physical DMG, +5 Magic DMG, -1 HP Penalty for using Fire DMG`)
+                if (choices == "1") { changeBuild.list[0].changeStats(); } else if (choices == "2") { changeBuild.list[1].changeStats(); } else if (choices == "3") { changeBuild.list[2].changeStats(); } else(`Please enter valid number.`)
+            }
+            givePotions();
             setUpBattle();
+            $('#text-health-point').text(`${player.currentHealth}/${player.totalHealth}`);
+            $('#physDMGUI').text(`${player.physDMG} DMG`);
+            $('#magDMGUI').text(`${player.magicDMG} DMG \n -${player.fireDMG} HP`);
         } else {
-            $('#sprite-monster').fadeOut(200)
-            gameOverMessage()
+            $('#sprite-monster').fadeOut(200);
+            gameOverMessage();
         }
     } else {
         setTimeout(function() { enemyAttack(index) }, 100);
@@ -378,21 +401,36 @@ $('#ui-physicalattack').on("click", function() {
         setTimeout(function() { $('#sprite-boss').attr("src", "assets/Enemy-Boss-Sprite_Animation.gif") }, 2000)
     } else { setTimeout(function() { $('#sprite-monster').attr("src", "assets/Enemy-Sprite_Animation.gif") }, 2000) }
 
+}
+
+
+$('#ui-physicalattack').on("click", function() {
+    //for (number = 0; number <= monsters.enemyList.length; number++) {
+    console.log(`Debug Check ${1}`)
+    console.log(`Debug Attack Normal Enemy`)
+    if (floor % 5 == 0) {
+        $('#sprite-boss').attr("src", "assets/Enemy-Boss-Sprite_Fight-Animation.gif")
+    } else { $('#sprite-monster').attr("src", "assets/Enemy-Sprite_FightAnimation.gif") }
+
+    player.physAttack(monsters.enemyList[index]);
+    updateEnemyHealth(monsters.enemyList[index]);
+    updatePlayerHealth();
+
+    $('#ui-physicalattack').hide();
+    $('#ui-magicalattack').hide();
+    setTimeout(function() { $('#ui-physicalattack').fadeIn(300); }, 2000)
+    setTimeout(function() { $('#ui-magicalattack').fadeIn(300); }, 2000)
+
+    checkAndProceed();
+
 })
+
 
 $('#ui-magicalattack').on("click", function() {
     console.log(`Debug: Floor: ${floor}. Index: ${index}. Boss Index: ${bossIndex}`);
     if (floor % 5 == 0) {
         $('#sprite-boss').attr("src", "assets/Enemy-Boss-Sprite_Fight-Animation.gif")
     } else { $('#sprite-monster').attr("src", "assets/Enemy-Sprite_FightAnimation.gif") }
-    // if (floor % 6 == 0 && bosses.enemyList[bossIndex - 1].currentHealth > 0) { //Trigger on certain floors only
-    //     if (bosses.enemyList[bossIndex - 1].currentHealth > 0) {
-    //         console.log(`Debug Attack Boss`)
-    //         player.magicAttack(bosses.enemyList[bossIndex - 1]);
-    //         updateEnemyHealth(bosses.enemyList[bossIndex - 1]);
-    //         updatePlayerHealth();
-    //     }
-    // } else { player.magicAttack(monsters.enemyList[index]); }
     player.magicAttack(monsters.enemyList[index]);
     if (player.currentHealth < 1) {
         alert('You have died due to burn damage. Watch out next time!')
@@ -405,40 +443,13 @@ $('#ui-magicalattack').on("click", function() {
     setTimeout(function() { $('#ui-physicalattack').fadeIn(300); }, 2000)
     setTimeout(function() { $('#ui-magicalattack').fadeIn(300); }, 2000)
 
-    if (player.currentHealth < 1) {
-        updatePlayerHealth();
-        gameOverMessage();
-        $('div.game-section section.player-section').hide();
-    } else if (monsters.enemyList[index].currentHealth <= 0) {
-        $('#sprite-monster').fadeOut(300)
-        sfxVictory.play();
-        musicBoss.pause()
-        musicBoss.currentTime = 0;
-        musicBGBattle.pause();
-        musicBGBattle.currentTime = 0;
-        const messageConfirm = confirm("You have defeated the enemy! Would you rather continue or retreat?")
-        if (messageConfirm == true) {
-            index++;
-            floor++;
-            if (floor % 5 == 0) { musicBoss.play() } else { musicBGBattle.play(); }
-            givePotions()
-            setUpBattle();
-        } else {
-            $('#sprite-monster').fadeOut(200)
-            gameOverMessage()
-        }
-    } else {
-        setTimeout(function() { enemyAttack(index) }, 100);
-    }
-    if (floor % 5 == 0) {
-        setTimeout(function() { $('#sprite-boss').attr("src", "assets/Enemy-Boss-Sprite_Animation.gif") }, 2000)
-    } else { setTimeout(function() { $('#sprite-monster').attr("src", "assets/Enemy-Sprite_Animation.gif") }, 2000) }
+    checkAndProceed();
 })
 
 
 $('#ui-potionicon').on("click", function() {
     if (player.potionQTY > 0) {
-        if (player.currentHealth + 20 < 100) {
+        if (player.currentHealth + 20 < player.totalHealth) {
             sfxPotion1.play();
             sfxPotion2.play();
             $('#ui-physicalattack').hide();
