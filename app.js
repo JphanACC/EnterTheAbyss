@@ -26,6 +26,9 @@ const playRandomPhysSFX = function() {
     return sfxPhysAttackSounds[pickRandom].play()
 }
 var sfxVictory = new Audio('music/gold-4.wav')
+    //@author: qubodup. NOTE: FLAC files
+var sfxPotion1 = new Audio('music/bottle-open-04.flac');
+var sfxPotion2 = new Audio('music/bottle-shake-06.flac');
 
 class Player {
     constructor(player = "The Adventurer", health = 100, physDMG = 10, magicDMG = 25) {
@@ -111,10 +114,32 @@ class Factory {
         setTimeout(function() { this.enemyList[index].physAttack(player) }, 2500);
         setTimeout(updatePlayerHealth, 3000);
     }
+
+    modifyBoss(index, baseHealth, basePhysDMG, baseMagicDMG) {
+        this.enemyList[index]['ID'] = index;
+        this.enemyList[index]['player'] = `Abyss High Priestess ${index+1}`;
+        this.enemyList[index]['totalHealth'] = baseHealth + ((10 * index) / 5);
+        this.enemyList[index]['currentHealth'] = this.enemyList[index]['totalHealth'];
+        this.enemyList[index]['physDMG'] = Math.floor(basePhysDMG + ((2 * index) / 6));
+        this.enemyList[index]['MagicDMG'] = Math.floor(baseMagicDMG + ((2 * index) / 6));
+    }
+
+    //Update HTML element. NOTE part of FACTORY
+    assignEnemy(index) {
+        $('#enemy-name').text(`${this.enemyList[index]['player']}`)
+        $('#enemy-health-point').text(`HP: ${this.enemyList[index]['currentHealth']}/${this.enemyList[index]['totalHealth']}`)
+    }
+
+    attackPlayer(index) {
+        $('#dialogue-box').hide()
+        $('#dialogue-box').text(`It's now ${monsters.enemyList[0].player}'s turn to attack`)
+        $('#dialogue-box').fadeIn(300)
+        setTimeout(function() { this.enemyList[index].physAttack(player) }, 2500);
+        setTimeout(updatePlayerHealth, 3000);
+    }
 }
 
 // SECTION 3. Game starts
-
 
 //SECTION Enemy Stats
 const monsters = new Factory("Undead Knight");
@@ -123,31 +148,56 @@ const generateEnemy = function(index) {
     monsters.modifyEnemy(index, 15, 5);
     monsters.assignEnemy(index);
 }
+const bosses = new Factory("Abyss Boss");
+const generateBoss = function(index) {
+    bosses.generateEnemy();
+    bosses.modifyBoss(index, 50, 10, 25);
+    bosses.assignEnemy(index);
+}
 
 //Floor to keep track with progression
-let floor = 0; //<<=============== This is my backup plan. When the enenmy first generated it starts at 1. However the loop doesn't like it either.
+let floor = 0;
 const setTextFloor = function(floorNumber) {
-    $('#text-floor-number').text(`${floorNumber}`)
+    $('#text-floor-number').text(`${floorNumber}`);
 }
+
 
 //SECTION Generating Enemy and setting up for next round screen
 const setUpBattle = function() {
     floor = floor + 1; //Runs floor +1 
+    $('#sprite-boss').hide();
     $('#text-floor-number').hide();
     $('#text-floor-number').text(`${floor}`);
     $('#text-floor-number').fadeIn(400);
     $('div.game-section section.player-section').hide();
-    $('div.game-section section.monster-section').hide();
+    $('#sprite-monster').hide();
     console.log(`This is current floor ${floor}`);
     generateEnemy(floor - 1); //Generate enemy
 
     $('div.game-section section.player-section').fadeIn(800);
-    $('div.game-section section.monster-section').fadeIn(2000);
+    $('#sprite-monster').fadeIn(2000);
+}
+
+// NOTE (*) BOSS SETUP
+const setUpBoss = function() {
+    floor = floor + 1; //Runs floor +1 
+    $('#sprite-monster').hide();
+    $('#text-floor-number').hide();
+    $('#text-floor-number').text(`${floor}`);
+    $('#text-floor-number').fadeIn(400);
+    $('div.game-section section.player-section').hide();
+    $('#sprite-boss').hide();
+    console.log(`This is current floor ${floor}`);
+    generateBoss(bossIndex); //Generate boss
+    bossIndex = bossIndex + 1
+
+    $('div.game-section section.player-section').fadeIn(800);
+    $('#sprite-boss').fadeIn(2000);
 }
 
 const updatePlayerHealth = function() {
     $('#text-health-point').hide();
-    if (player.currentHealth > 1) {
+    if (player.currentHealth > 0) {
         $('#text-health-point').text(`${player.currentHealth}/${player.totalHealth}`);
         $('#text-health-point').fadeIn(250);
     } else if (player.currentHealth < 1) {
@@ -158,7 +208,7 @@ const updatePlayerHealth = function() {
 }
 const updateEnemyHealth = function(target) {
     $('#enemy-health-point').hide();
-    if (target.currentHealth > 1) {
+    if (target.currentHealth > 0) {
         $('#enemy-health-point').text(`HP: ${target.currentHealth}/${target.totalHealth}`);
         $('#enemy-health-point').fadeIn(250);
     } else if (target.currentHealth < 1) {
@@ -226,9 +276,6 @@ $('div.home-menu').on("click", function() {
 });
 
 
-
-
-
 //TODO Battle turns
 const enemyAttack = function(index) {
     sfxMonster4.play();
@@ -243,32 +290,54 @@ const enemyAttack = function(index) {
     // monsters.enemyList[0].physAttack(player);
 }
 
-index = 0;
+const bossAttack = function(index) {
+    sfxMonster4.play();
+    sfxMonster3.play();
+    $('#dialogue-box').hide()
+    $('#dialogue-box').text(`It's now ${bosses.enemyList[index].player}'s turn to attack`)
+    $('#dialogue-box').fadeIn(300)
+    if (player.currentHealth > 1) {
+        setTimeout(function() { bosses.enemyList[index].physAttack(player) }, 1500);
+        setTimeout(updatePlayerHealth, 2000);
+    } else { gameOverMessage(); }
+    // monsters.enemyList[0].physAttack(player);
+}
 
-function checkFloor() {
-    if (index % 4 == 2) {
+index = 0;
+bossIndex = 0;
+
+function givePotions() {
+    if (index % 4 == 0) {
         console.log(`Debug index: ${index}`)
         alert('You have picked 2 extra potions. Use them carefully!')
         player.potionQTY += 2;
         $(`#text-potion-qty`).text(`QTY: ${player.potionQTY}`);
     }
 }
-monsters.enemyList.forEach(function() {
-    if (monsters.enemyList.length == 2) {
-        console.log(`Debug index: ${index}`)
-        alert('You have picked 2 extra potions. Use them carefully!')
-        player.potionQTY += 2;
-        $(`#text-potion-qty`).text(`QTY: ${player.potionQTY}`);
+
+function checkBoss() {
+    if (index % 5 == 0) {
+        console.log(`Debug Boss Check Function: ${index} ${bossIndex}`)
+        setUpBoss();
+        alert('A strong challenger shows up!');
     }
-})
+}
+
 
 
 $('#ui-physicalattack').on("click", function() {
     //for (number = 0; number <= monsters.enemyList.length; number++) {
     console.log(`Debug Check ${1}`) // runs. returns 1 INSTEAD of 0
+        // if (!bosses.enemyList.length == 0) {
+        //     console.log(`Debug Attack Boss`)
+        //     player.physAttack(bosses.enemyList[bossIndex - 1]);
+        //     updateEnemyHealth(bosses.enemyList[bossIndex - 1]);
+        // }
+    console.log(`Debug Attack Normal Enemy`)
     $('#sprite-monster').attr("src", "assets/Enemy-Sprite_FightAnimation.gif")
     player.physAttack(monsters.enemyList[index]);
     updateEnemyHealth(monsters.enemyList[index]);
+
     $('#ui-physicalattack').hide();
     $('#ui-magicalattack').hide();
     setTimeout(function() { $('#ui-physicalattack').fadeIn(300); }, 2000)
@@ -287,9 +356,11 @@ $('#ui-physicalattack').on("click", function() {
         if (messageConfirm == true) {
             $('#sprite-monster').fadeIn(300)
             musicBGBattle.play();
-            setUpBattle(); //This is a function that generates next enemy from the Factory
             index++;
-            checkFloor()
+
+            givePotions()
+                // if (index % 5 == 0) { checkBoss(); } else { setUpBattle(); };
+            setUpBattle();
         } else {
             $('#sprite-monster').fadeOut(200)
             gameOverMessage()
@@ -330,9 +401,10 @@ $('#ui-magicalattack').on("click", function() {
         if (messageConfirm == true) {
             $('#sprite-monster').fadeIn(300)
             musicBGBattle.play();
-            setUpBattle();
             index++;
-            checkFloor();
+            setUpBattle();
+            // if (index % 5 == 0) { checkBoss() } else { setUpBattle(); };
+            givePotions();
         } else {
             $('#sprite-monster').fadeOut(200)
             gameOverMessage()
@@ -346,6 +418,12 @@ $('#ui-magicalattack').on("click", function() {
 $('#ui-potionicon').on("click", function() {
     if (player.potionQTY > 0) {
         if (player.currentHealth + 20 < 100) {
+            sfxPotion1.play();
+            sfxPotion2.play();
+            $('#ui-physicalattack').hide();
+            $('#ui-magicalattack').hide();
+            setTimeout(function() { $('#ui-physicalattack').fadeIn(300); }, 300)
+            setTimeout(function() { $('#ui-magicalattack').fadeIn(300); }, 300)
             player.heal()
             updatePlayerHealth();
             player.potionQTY = player.potionQTY - 1;

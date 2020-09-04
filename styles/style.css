@@ -116,6 +116,15 @@ div.enemy-info p {
     bottom: 1vh
 }
 
+#sprite-boss {
+    position: absolute;
+    width: 174%;
+    height: auto;
+    top: 9vh;
+    margin: auto;
+    transform: translate(0%, -52%);
+}
+
 
 /* SECTION Player Properties */
 
@@ -259,8 +268,8 @@ section.log-section {
     color: red;
     text-align: center;
     margin: 8px;
-    font-size: 15px;
-    background: -webkit-linear-gradient(#881717, #c28616);
+    font-size: 17px;
+    background: -webkit-linear-gradient(#ff1a1a, #c28616);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -338,5 +347,8 @@ div.how-to-play-button {
     }
     section.home-menu h1 {
         font-size: 47px;
+    }
+    #dialogue-box {
+        font-size: 15px;
     }
 }
